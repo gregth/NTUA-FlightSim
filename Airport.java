@@ -2,17 +2,17 @@ import java.io.*;
 import java.util.*;
 
 public class Airport {
-	private int id, direction, type;
+	private int id, direction, category;
     private Position position;
 	private boolean open;
 	private String name;
 
-	public Airport(int id, int x, int y, String name, int direction, int type, boolean open) {
+	public Airport(int id, int x, int y, String name, int direction, int category, boolean open) {
         this.id = id;
         this.position = new Position(x, y);
         this.name = name;
 		this.direction = direction;
-		this.type = type;
+		this.category = category;
         this.open = open;
 	}
 
@@ -32,8 +32,8 @@ public class Airport {
 		return direction;
 	}
 
-	public int getType(){
-		return type;
+	public int getCategory(){
+		return category;
 	}
 
 	public String getName() {
@@ -41,7 +41,7 @@ public class Airport {
 	}
 
     public void print() {
-        System.out.println("Airport ID:" + id + " name:" + name + " direction:" + direction + " type:" + type + " open:" + open);
+        System.out.println("Airport ID:" + id + " name:" + name + " direction:" + direction + " category:" + category + " open:" + open);
         position.print();
     }
 }
