@@ -39,4 +39,9 @@ public class Airport {
 	public String getName() {
 		return name;
 	}
+
+    public void print() {
+        System.out.println("Airport ID:" + id + " name:" + name + " direction:" + direction + " type:" + type + " open:" + open);
+        position.print();
+    }
 }
