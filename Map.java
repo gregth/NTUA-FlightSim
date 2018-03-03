@@ -4,8 +4,14 @@ import java.util.*;
 public class Map {
     private int[][] map;
 
-    public Map() {
+    private static final Map instance = new Map();
+
+    private Map() {
         map = new int[CONSTANTS.ROWS][CONSTANTS.COLS];
+    };
+
+    public static Map getInstance() {
+        return instance;
     }
 
     // Parse map from file
