@@ -19,7 +19,7 @@ public class Flight {
         this.name = name;
         this.departureAirport = airportsDB.getAirportByID(departureAirportID);
         this.arrivalAirport = airportsDB.getAirportByID(arrivalAirportID);
-        this.aircraft = aircraftsDB.getAircraftSpecsByType(int aircraftType);
+        this.aircraft = aircraftsDB.getAircraftSpecsByType(aircraftType);
         this.flightSpeed = flightSpeed;
         this.altitude = altitude;
         this.fuel = fuel;
@@ -34,7 +34,7 @@ public class Flight {
 	}
 
     public boolean isValidFlight() {
-        if (departureAirport == null || arrivalAirport == null || aircraftType == null ) {
+        if (departureAirport == null || arrivalAirport == null || aircraft == null ) {
             return false;
         }
         if (!arrivalAirport.isOpen() || !departureAirport.isOpen()) {
@@ -53,7 +53,7 @@ public class Flight {
         if (altitude > aircraft.getMaxAlt()) {
             return false;
         }
-        if (maxFuelWeight > aircraft.getMaxFuelWeight()) {
+        if (fuel > aircraft.getMaxFuelWeight()) {
             return false;
         }
         return true;

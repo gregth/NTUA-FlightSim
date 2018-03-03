@@ -61,7 +61,7 @@ public class Airport {
             if (aircraftType == CONSTANTS.SINGLE_ENGINE) {
                 return true;
             }
-            return false;;
+            return false;
         }
         return false;
     }
