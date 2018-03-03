@@ -2,13 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class AirportDatabase {
-    private ArrayList<Airport> airports;
+    private HashMap<Integer, Airport> airports;
 
     // Create Singleton Instance of the AirportDatabase Class
     private static final AirportDatabase instance = new AirportDatabase();
 
     private AirportDatabase() {
-        airports = new ArrayList<Airport>();
+        airports = new HashMap<Integer, Airport>();
     };
 
     public static AirportDatabase getInstance() {
@@ -17,7 +17,7 @@ public class AirportDatabase {
 
     // Adds an airport to database
     public void add(Airport airport) {
-        airports.add(airport);
+        airports.put(airport.getID(), airport);
     }
 
     // Parse airport database from file
@@ -48,8 +48,8 @@ public class AirportDatabase {
     // Prints debugging info
     public void print() {
         System.out.println("Printing Airports Database");
-        for (Airport airport : airports) {
+        airports.forEach((k, airport) -> {
             airport.print();
-        }
+        });
     }
 }
