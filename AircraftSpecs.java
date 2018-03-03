@@ -38,6 +38,10 @@ public class AircraftSpecs {
         return maxAlt;
     }
 
+    public int getMaxFlightSpeed() {
+        return maxFlightSpeed;
+    }
+
     public int getAscDescRate() {
         return ascDescRate;
     }
