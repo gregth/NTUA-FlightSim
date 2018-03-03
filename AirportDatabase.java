@@ -20,6 +20,10 @@ public class AirportDatabase {
         airports.put(airport.getID(), airport);
     }
 
+    public Airport getAirportByID(int id) {
+        return airports.get(id);
+    }
+
     // Parse airport database from file
     public void parseFile(String filePath) {
         try {
