@@ -53,4 +53,9 @@ public class AircraftSpecs {
     public int getMaxFuelWeight() {
         return maxFuelWeight;
     }
+
+    public void print() {
+        System.out.println("Type:" + type + " landingSpeed: " + landingSpeed
+            + " maxFlightSpeed:" + maxFlightSpeed + " maxFuel:" + maxFuelWeight + " maxAlt:" + maxAlt);
+    }
 }

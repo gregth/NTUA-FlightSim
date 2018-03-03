@@ -58,4 +58,14 @@ public class Flight {
         }
         return true;
     }
+
+    public void print() {
+        System.out.println("Flight: " + id + " time:" + startTime + " name:" + name + " alt:" + altitude + "fuel: " + fuel);
+        System.out.println("Printing Departure Airport:");
+        departureAirport.print();
+        System.out.println("Printing Arrival Airport");
+        arrivalAirport.print();
+        System.out.println("Printing aircraft");
+        aircraft.print();
+    }
 }
