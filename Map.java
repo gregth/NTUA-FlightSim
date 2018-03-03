@@ -2,12 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class Map {
-    private static final int ROWS = 30;
-    private static final int COLS = 60;
     private int[][] map;
 
     public Map() {
-        map = new int[ROWS][COLS];
+        map = new int[CONSTANTS.ROWS][CONSTANTS.COLS];
     }
 
     // Parse map from file
@@ -21,7 +19,7 @@ public class Map {
                 j = 0;
 			    String[] parts = line.split(",");
                 for (String part : parts) {
-                    if (j >= COLS) {
+                    if (j >= CONSTANTS.COLS) {
                         throw new WrongInputFormatException("Wrong input file format: " + filePath + " LINE:" + i);
                     }
                     map[i][j] = Integer.parseInt(part);
@@ -29,12 +27,12 @@ public class Map {
                 }
                 i++;
                 // Check if out of bound
-                if (i >= ROWS) {
+                if (i >= CONSTANTS.ROWS) {
                     break;
                 }
             }
 
-            if (i != ROWS || j != COLS) {
+            if (i != CONSTANTS.ROWS || j != CONSTANTS.COLS) {
                 throw new WrongInputFormatException("Wrong input file format: " + filePath + " LESS DATA THAN EXPECTED");
             }
 
@@ -46,8 +44,8 @@ public class Map {
     }
 
     public void print() {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
+        for (int i = 0; i < CONSTANTS.ROWS; i++) {
+            for (int j = 0; j < CONSTANTS.COLS; j++) {
                 System.out.print(map[i][j] + " ");
             }
             System.out.println();
