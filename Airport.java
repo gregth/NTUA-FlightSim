@@ -44,4 +44,25 @@ public class Airport {
         System.out.println("Airport ID:" + id + " name:" + name + " direction:" + direction + " category:" + category + " open:" + open);
         position.print();
     }
+
+    public boolean acceptsAircraft(AircraftSpecs aircraft) {
+        int aircraftType = aircraft.getType();
+        if (this.category == 3) {
+            return true;
+        }
+        if (this.category == 2) {
+            if (aircraftType == CONSTANTS.JET ||
+                aircraftType == CONSTANTS.TURBO) {
+                return true;
+            }
+            return false;
+        }
+        if (this.category == 1) {
+            if (aircraftType == CONSTANTS.SINGLE_ENGINE) {
+                return true;
+            }
+            return false;;
+        }
+        return false;
+    }
 }
