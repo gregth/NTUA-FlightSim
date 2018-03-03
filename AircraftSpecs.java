@@ -46,7 +46,7 @@ public class AircraftSpecs {
         return fuelConsumptionRate;
     }
 
-    public int getMaxFuelWight() {
+    public int getMaxFuelWeight() {
         return maxFuelWeight;
     }
 }
