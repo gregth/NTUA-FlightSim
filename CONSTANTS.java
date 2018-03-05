@@ -15,7 +15,7 @@ public class CONSTANTS {
 
     public static final int MAP_HEIGHT = CONSTANTS.ROWS * CONSTANTS.TILE_SIZE;
     public static final int MAP_WIDTH = CONSTANTS.COLS * CONSTANTS.TILE_SIZE;
-    public static final int STATUS_HEIGHT = 4 * CONSTANTS.TILE_SIZE;
+    public static final int STATUS_HEIGHT = 2 * CONSTANTS.TILE_SIZE;
     public static final int STATUS_WIDTH = MAP_WIDTH;
     public static final int MESSAGES_WIDTH = 20 * CONSTANTS.TILE_SIZE;
     public static final int MESSAGES_HEIGHT  = MAP_HEIGHT;
