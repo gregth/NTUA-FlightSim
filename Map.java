@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.awt.*;
 
 public class Map {
     private int[][] map;
@@ -56,5 +57,46 @@ public class Map {
             }
             System.out.println();
         }
+    }
+
+    public Color getColor(int row, int column) {
+        int altitude = map[row][column];
+        int red, green, blue;
+        if (altitude <= 0) {
+            red = 0;
+            green = 0;
+            blue = 255;
+        }
+        else if (altitude <= 200) {
+            red = 60;
+            green = 179;
+            blue = 113;
+        }
+        else if (altitude <=400) {
+            red = 46;
+            green = 139;
+            blue = 87;
+        }
+        else if (altitude <= 700) {
+            red = 34;
+            green = 139;
+            blue = 34;
+        }
+        else if (altitude <= 1500) {
+            red = 222;
+            green = 184;
+            blue = 135;
+        }
+        else if (altitude <= 3500) {
+            red = 205;
+            green = 133;
+            blue = 63;
+        }
+        else {
+            red = 145;
+            green = 80;
+            blue = 20;
+        }
+        return new Color(red, green, blue);
     }
 }
