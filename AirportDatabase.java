@@ -3,12 +3,22 @@ import java.util.*;
 
 public class AirportDatabase {
     private HashMap<Integer, Airport> airports;
+    private static final int ROWS = CONSTANTS.ROWS;
+    private static final int COLS = CONSTANTS.COLS;
+
+    private boolean[][] airportMap;
 
     // Create Singleton Instance of the AirportDatabase Class
     private static final AirportDatabase instance = new AirportDatabase();
 
     private AirportDatabase() {
         airports = new HashMap<Integer, Airport>();
+        airportMap = new boolean[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                airportMap[i][j] = false;
+            }
+        }
     };
 
     public static AirportDatabase getInstance() {
@@ -18,6 +28,9 @@ public class AirportDatabase {
     // Adds an airport to database
     public void add(Airport airport) {
         airports.put(airport.getID(), airport);
+        Position p = airport.getPosition();
+        airportMap[p.getX()][p.getY()] = true;
+
     }
 
     public Airport getAirportByID(int id) {
@@ -55,5 +68,9 @@ public class AirportDatabase {
         airports.forEach((k, airport) -> {
             airport.print();
         });
+    }
+
+    public boolean existsAirport(int row, int col) {
+        return airportMap[row][col];
     }
 }
