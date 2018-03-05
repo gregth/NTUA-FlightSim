@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class SimulationPane extends JPanel {
+
     private static final int MAP_WIDTH = CONSTANTS.MAP_WIDTH;
     private static final int STATUS_HEIGHT = CONSTANTS.STATUS_HEIGHT;
     private static final int MESSAGES_WIDTH = CONSTANTS.MESSAGES_WIDTH;
@@ -15,24 +16,14 @@ public class SimulationPane extends JPanel {
     private static final int SIMULATION_PANE_WIDTH = CONSTANTS.SIMULATION_PANE_WIDTH;
     private static final int SIMULATION_PANE_HEIGHT = CONSTANTS.SIMULATION_PANE_HEIGHT;
 
-    public JPanel map;
-
 	public SimulationPane (){
         setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
         this.setPreferredSize(new Dimension(SIMULATION_PANE_WIDTH, SIMULATION_PANE_HEIGHT));
         this.setMinimumSize(new Dimension(SIMULATION_PANE_WIDTH, SIMULATION_PANE_HEIGHT));
         this.setMaximumSize(new Dimension(SIMULATION_PANE_WIDTH, SIMULATION_PANE_HEIGHT));
-		//setLayout(new BorderLayout());
 		setBackground(Color.RED);
 
-        JPanel map = new JPanel();
-        map.setLayout(new GridLayout());
-        map.setPreferredSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
-        map.setMinimumSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
-        map.setMaximumSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
-        map.setBackground(Color.BLACK);
-
-        //this.add(map, BorderLayout.WEST);
+        JPanel map = new MapPane();
         this.add(map);
 
         JPanel messages = new JPanel();
@@ -41,6 +32,5 @@ public class SimulationPane extends JPanel {
         messages.setMinimumSize(new Dimension(MESSAGES_WIDTH, MAP_HEIGHT));
         messages.setMaximumSize(new Dimension(MESSAGES_WIDTH, MAP_HEIGHT));
         this.add(messages);
-        //this.add(messages, BorderLayout.EAST);
 	}
 }
