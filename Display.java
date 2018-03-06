@@ -1,13 +1,13 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
 public class Display {
     private JFrame frame;
-    Canvas canvas;
+    private StatusPane statusPane;
+    private MenuPane menuPane;
+    private SimulationPane simulationPane;
 
     private static final int FRAME_WIDTH = CONSTANTS.FRAME_WIDTH;
     private static final int FRAME_HEIGHT= CONSTANTS.FRAME_HEIGHT;
@@ -29,8 +29,17 @@ public class Display {
 		wrapPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         frame.add(wrapPane);
 
-        wrapPane.add(new StatusPane(), BorderLayout.NORTH);
-        wrapPane.add(new SimulationPane(), BorderLayout.CENTER);
+        statusPane = new StatusPane();
+        simulationPane = new SimulationPane();
+        wrapPane.add(statusPane, BorderLayout.NORTH);
+        wrapPane.add(simulationPane, BorderLayout.CENTER);
+
+        menuPane = new MenuPane();
+        wrapPane.add(menuPane, BorderLayout.SOUTH);
     }
 
+    public void refresh() {
+        statusPane.refresh();
+        simulationPane.refresh();
+    }
 }
