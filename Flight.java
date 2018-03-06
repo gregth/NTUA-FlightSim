@@ -6,11 +6,12 @@ public class Flight {
     private Airport departureAirport, arrivalAirport;
     private String name;
     private AircraftSpecs aircraft;
-    private int flightSpeed, altitude, fuel;
+    double flightSpeed;
+    private int altitude, fuel;
     private int currentDuration;
     private PrecisePosition aircraftPosition;
-    private int degrees;
-    private boolean exitedDepartureAirport, enteredArrivalAirport, reachedDestination, active;
+    private int degrees, currentAltitude;
+    private boolean exitedDepartureAirport, enteredArrivalAirport, reachedDestination, active, fixedAltitude;
     public static final int LEFT = 270, RIGHT = 90, UP = 0, DOWN = 180;
     private Universe myUniverse;
 
@@ -26,7 +27,7 @@ public class Flight {
         this.departureAirport = airportsDB.getAirportByID(departureAirportID);
         this.arrivalAirport = airportsDB.getAirportByID(arrivalAirportID);
         this.aircraft = aircraftsDB.getAircraftSpecsByType(aircraftType);
-        this.flightSpeed = flightSpeed;
+        this.flightSpeed = ((double) flightSpeed) / 3600;
         this.altitude = altitude;
         this.fuel = fuel;
         Position dp = departureAirport.getPosition();
@@ -34,7 +35,40 @@ public class Flight {
         this.exitedDepartureAirport = false;
         this.enteredArrivalAirport = false;
         this.reachedDestination = false;
+        this.fixedAltitude = false;
         this.myUniverse = Universe.getInstance();
+        this.currentAltitude = 0;
+    }
+
+    private double orthoDistance(PrecisePosition a, PrecisePosition b) {
+        double x1 = a.getX();
+        double y1 = a.getY();
+
+        double x2 = b.getX();
+        double y2 = b.getY();
+
+        return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+    }
+    // Calculated time for aitcraft to arrive when not in
+    // departure or arrival area
+    private double timeRemaining() {
+        double time = 0;
+        if (!exitedDepartureAirport) {
+            time += orthoDistance(departureAirport.getGatePoint(), aircraftPosition) / aircraft.getLandingSpeed();
+            time += orthoDistance(departureAirport.getGatePoint(), arrivalAirport.getGatePoint()) / flightSpeed;
+            time += CONSTANTS.TILE_SIZE_IN_MILES / 2 / aircraft.getLandingSpeed();
+            return time;
+        }
+        if (enteredArrivalAirport) {
+            System.out.println("here");
+            time += orthoDistance(arrivalAirport.getPrecisePosition(), aircraftPosition) / aircraft.getLandingSpeed();
+            return time;
+        }
+
+        time += orthoDistance(aircraftPosition, arrivalAirport.getGatePoint()) / flightSpeed;
+        time += CONSTANTS.TILE_SIZE_IN_MILES / 2 / aircraft.getLandingSpeed();
+
+        return time;
     }
 
     public boolean hasReachedDestination() {
@@ -105,10 +139,11 @@ public class Flight {
             int tolerance = (int) (getCurrentSpeed() * dt + 1);
             navigate(tolerance);
             updateAircraftPosition(dt);
+            System.out.println("[Flight ID: " + id + "] Estimated time: " + timeRemaining());
         } else {
             myUniverse.addMessage("[Flight ID: " + id + "] LANDED");
+            myUniverse.increaseLandings();
             active = false;
-
         }
     }
 
@@ -117,7 +152,7 @@ public class Flight {
     }
 
     // Το degrees αναπαριστά τη δεξιόστροφη γωνία σε μοίρες
-    private void updateAircraftPosition(double dt) {
+    public void updateAircraftPosition(double dt) {
         double speed = getCurrentSpeed();
         double speedY = - speed * Math.cos(Math.toRadians(degrees));
         double speedX = speed * Math.sin(Math.toRadians(degrees));
@@ -127,7 +162,8 @@ public class Flight {
         // Use tolerance value beacuse position takes discrete values
         int tolerance = (int) (getCurrentSpeed() * dt + 1);
         if (comparePositions((int) newX, arrivalAirport.getPosition().getX(), tolerance) == 0 &&
-            comparePositions((int) newY, arrivalAirport.getPosition().getY(), tolerance) == 0 ) {
+            comparePositions((int) newY, arrivalAirport.getPosition().getY(), tolerance) == 0 &&
+            enteredArrivalAirport) {
             reachedDestination = true;
         }
 
@@ -158,11 +194,10 @@ public class Flight {
 
     // Return aircraft current speed in miles per second
     private double getCurrentSpeed() {
-        if (isInAirportRange(departureAirport) ||
-            isInAirportRange(arrivalAirport)) {
-            return ((double) aircraft.getLandingSpeed()) / 3600;
+        if (enteredArrivalAirport || exitedDepartureAirport) {
+            return aircraft.getLandingSpeed();
         } else {
-            return ((double) aircraft.getMaxFlightSpeed()) / 3600;
+            return flightSpeed;
         }
     }
 
@@ -199,10 +234,10 @@ public class Flight {
                     break;
             }
         } else {
-            int gatePointX = arrivalAirport.getGatePoint().getX();
-            int gatePointY = arrivalAirport.getGatePoint().getY();
-            int aircraftX = (int) aircraftPosition.getX();
-            int aircraftY = (int) aircraftPosition.getY();
+            double gatePointX = arrivalAirport.getGatePoint().getX();
+            double gatePointY = arrivalAirport.getGatePoint().getY();
+            double aircraftX = aircraftPosition.getX();
+            double aircraftY = aircraftPosition.getY();
 
             // Move horizontally first, then vertically, towards gate point
             if (comparePositions(gatePointX, aircraftX, tolerance) == -1) {
@@ -215,17 +250,18 @@ public class Flight {
                     degrees = UP;
                 } else if (comparePositions(gatePointY, aircraftY, tolerance) == 1) {
                     degrees = DOWN;
-                } else {
+                } else if (degrees == arrivalAirport.getDegrees())  {
                     enteredArrivalAirport = true;
                     myUniverse.addMessage("[Flight ID: " + id + "] ENTERED Destination Airport Area");
                 }
             }
         }
+
     }
 
     // Return > 1 if a "greater than b", 0 if "equal", else -1
-    private int comparePositions(int a, int b, int tolerance) {
-        int diff = a - b;
+    private int comparePositions(double a, double b, int tolerance) {
+        double diff = a - b;
         if (diff > tolerance)
             return 1;
         else if (diff < -tolerance)
