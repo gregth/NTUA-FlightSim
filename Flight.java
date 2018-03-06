@@ -79,8 +79,20 @@ public class Flight {
 		return startTime;
 	}
 
+    public int getAltitude() {
+        return altitude;
+    }
+
 	public int getID() {
 		return id;
+	}
+
+	public void setCrashed() {
+        if (active) {
+            myUniverse.increaseCrashes();
+            myUniverse.addMessage("[Flight ID: " + id + "] CRASHED");
+            active = false;
+        }
 	}
 
 	public PrecisePosition getAircraftPosition() {
@@ -134,7 +146,12 @@ public class Flight {
     }
 
     public void integrate(double dt) {
-        if (!reachedDestination) {
+        reduceFuel(dt);
+        if (fuel <= 0 && active) {
+            myUniverse.addMessage("[Flight ID: " + id + "] RUN OUT OFF FUEL");
+            myUniverse.increaseCrashes();
+            active = false;
+        } else if (!reachedDestination) {
             currentDuration += dt * CONSTANTS.TIME_RATIO;
             int tolerance = (int) (getCurrentSpeed() * dt + 1);
             navigate(tolerance);
@@ -145,6 +162,11 @@ public class Flight {
             myUniverse.increaseLandings();
             active = false;
         }
+    }
+
+    private void reduceFuel(double dt) {
+        fuel -= aircraft.getFuelConsumptionRate() * dt *  getCurrentSpeed();
+        System.out.println("FUEL: " + fuel);
     }
 
     public boolean isActive() {

@@ -9,6 +9,9 @@ public class FlightsDatabase {
     private Position position;
     private Universe myUniverse;
 
+    private static final double CRASH_DISTANCE = 2;
+    private static final double CRASH_LATITUDE_DIFF = 2;
+
     private int time;
 
     // Create Singleton Instance of the FlightsDatabase Class
@@ -108,7 +111,6 @@ public class FlightsDatabase {
                 break;
             }
         }
-
         Iterator<Flight> iter = activeFlights.iterator();
         while (iter.hasNext()) {
             Flight flight = iter.next();
@@ -117,6 +119,21 @@ public class FlightsDatabase {
             } else {
                 // If flight not active anymore, remove it
                 activeFlights.remove(flight);
+            }
+        }
+        checkForColissions();
+    }
+
+    public void checkForColissions() {
+        for (Flight f1 : activeFlights) {
+            for (Flight f2 : activeFlights) {
+                if (f1 != f2 &&
+                        f1.getAircraftPosition().euclideanDistance(f2.getAircraftPosition()) <= CRASH_DISTANCE &&
+                        Math.abs(f1.getAltitude() - f2.getAltitude()) <= CRASH_LATITUDE_DIFF) {
+                    System.out.println("THAAAAAAAAAAAAAT");
+                    f1.setCrashed();
+                    f2.setCrashed();
+                }
             }
         }
     }
