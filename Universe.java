@@ -53,6 +53,10 @@ public class Universe {
         timer.start();
     }
 
+    public void stopTimer() {
+        timer.stop();
+    }
+
     public static Universe getInstance() {
         return instance;
     }
