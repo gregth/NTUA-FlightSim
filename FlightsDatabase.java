@@ -93,6 +93,7 @@ public class FlightsDatabase {
     public void init() {
         time = 0;
         integrate(0);
+        checkForColissions();
     }
 
     // Integrates for time interval dt in seconds
@@ -111,17 +112,26 @@ public class FlightsDatabase {
                 break;
             }
         }
-        Iterator<Flight> iter = activeFlights.iterator();
-        while (iter.hasNext()) {
-            Flight flight = iter.next();
+
+        checkForColissions();
+
+        ArrayList<Flight> markedFlights = new ArrayList<Flight>();
+        for (Flight flight : activeFlights) {
             if (flight.isActive()) {
                 flight.integrate(dt);
             } else {
-                // If flight not active anymore, remove it
-                activeFlights.remove(flight);
+                markedFlights.add(flight);
             }
         }
-        checkForColissions();
+
+        for (Flight flight : markedFlights) {
+            activeFlights.remove(flight);
+        }
+
+        if (activeFlights.isEmpty() && flightsQueue.isEmpty()) {
+            myUniverse.addMessage("END OF SIMULATION");
+        }
+
     }
 
     public void checkForColissions() {
