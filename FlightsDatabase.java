@@ -3,12 +3,23 @@ import java.util.*;
 
 public class FlightsDatabase {
     private HashMap<Integer, Flight> flights;
+    private PriorityQueue<Flight> flightsQueue;
+    private Comparator<Flight> comparator;
+    private ArrayList<Flight> activeFlights;
+    private Position position;
+    private Universe myUniverse;
+
+    private int time;
 
     // Create Singleton Instance of the FlightsDatabase Class
     private static final FlightsDatabase instance = new FlightsDatabase();
 
     private FlightsDatabase() {
         flights = new HashMap<Integer, Flight>();
+        comparator = new FlightComparator();
+        flightsQueue = new PriorityQueue<Flight>(1, comparator);
+        activeFlights = new ArrayList<Flight>();
+        myUniverse = Universe.getInstance();
     };
 
     public static FlightsDatabase getInstance() {
@@ -18,12 +29,20 @@ public class FlightsDatabase {
     // Adds a flight to database
     public void add(Flight flight) {
         flights.put(flight.getID(), flight);
+        flightsQueue.add(flight);
     }
 
     public Flight getFlightByID(int id) {
         return flights.get(id);
     }
 
+    public int countActiveFlights() {
+        return activeFlights.size();
+    }
+
+    public ArrayList<Flight> getActiveFlights() {
+        return activeFlights;
+    }
     // Parse fligths database from file
     public void parseFile(String filePath) {
         try {
@@ -37,7 +56,7 @@ public class FlightsDatabase {
                 }
 
                 int id = Integer.parseInt(parts[0]);
-                int startTime = Integer.parseInt(parts[1]);
+                int startTime = Integer.parseInt(parts[1]) * 60;
                 int departureAirportID = Integer.parseInt(parts[2]);
                 int arrivalAirportID = Integer.parseInt(parts[3]);
                 String name = parts[4];
@@ -49,13 +68,10 @@ public class FlightsDatabase {
                 Flight currentFlight = new Flight(id, startTime, departureAirportID,
                     arrivalAirportID, name, aircraftType, flightSpeed, altitude, fuel);
 
-
                 if (currentFlight.isValidFlight()) {
                     this.add(currentFlight);
-                    System.out.println("\nValid flight:");
                     currentFlight.print();
                 } else {
-                    System.out.println("\nInvalid flight:");
                     currentFlight.print();
                 }
             }
@@ -72,5 +88,39 @@ public class FlightsDatabase {
         flights.forEach((k, flight) -> {
             flight.print();
         });
+    }
+
+    public void init() {
+        time = 0;
+        integrate(0);
+    }
+
+    // Integrates for time interval dt in seconds
+    public void integrate(double dt) {
+        time += dt;
+
+        Flight currentFlight = flightsQueue.peek();
+        while (true) {
+            if (currentFlight != null && currentFlight.getStartTime() <= time) {
+                currentFlight.init();
+                flightsQueue.remove(currentFlight);
+                activeFlights.add(currentFlight);
+                myUniverse.addMessage("[Flight ID: " + currentFlight.getID() + "] TAKES OFF NOW");
+                currentFlight = flightsQueue.peek();
+            } else {
+                break;
+            }
+        }
+
+        Iterator<Flight> iter = activeFlights.iterator();
+        while (iter.hasNext()) {
+            Flight flight = iter.next();
+            if (flight.isActive()) {
+                flight.integrate(dt);
+            } else {
+                // If flight not active anymore, remove it
+                activeFlights.remove(flight);
+            }
+        }
     }
 }
