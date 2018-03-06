@@ -16,6 +16,8 @@ public class SimulationPane extends JPanel {
     private static final int SIMULATION_PANE_WIDTH = CONSTANTS.SIMULATION_PANE_WIDTH;
     private static final int SIMULATION_PANE_HEIGHT = CONSTANTS.SIMULATION_PANE_HEIGHT;
 
+    private MessagesPane messages;
+
 	public SimulationPane (){
         setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
         this.setPreferredSize(new Dimension(SIMULATION_PANE_WIDTH, SIMULATION_PANE_HEIGHT));
@@ -23,14 +25,19 @@ public class SimulationPane extends JPanel {
         this.setMaximumSize(new Dimension(SIMULATION_PANE_WIDTH, SIMULATION_PANE_HEIGHT));
 		setBackground(Color.RED);
 
-        JPanel map = new MapPane();
+        MapPane map = new MapPane();
         this.add(map);
 
-        JPanel messages = new JPanel();
+        messages = new MessagesPane();
         messages.setBackground(Color.GREEN);
         messages.setPreferredSize(new Dimension(MESSAGES_WIDTH, MAP_HEIGHT));
         messages.setMinimumSize(new Dimension(MESSAGES_WIDTH, MAP_HEIGHT));
         messages.setMaximumSize(new Dimension(MESSAGES_WIDTH, MAP_HEIGHT));
         this.add(messages);
 	}
+
+    public void refresh() {
+        this.repaint();
+        messages.renderNewMessages();
+    }
 }
