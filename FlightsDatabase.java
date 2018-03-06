@@ -3,12 +3,21 @@ import java.util.*;
 
 public class FlightsDatabase {
     private HashMap<Integer, Flight> flights;
+    private PriorityQueue<Flight> flightsQueue;
+    private Comparator<Flight> comparator;
+    private ArrayList<Flight> activeFlights;
+    private Position position;
+
+    private int time;
 
     // Create Singleton Instance of the FlightsDatabase Class
     private static final FlightsDatabase instance = new FlightsDatabase();
 
     private FlightsDatabase() {
         flights = new HashMap<Integer, Flight>();
+        comparator = new FlightComparator();
+        flightsQueue = new PriorityQueue<Flight>(1, comparator);
+        activeFlights = new ArrayList<Flight>();
     };
 
     public static FlightsDatabase getInstance() {
@@ -18,12 +27,21 @@ public class FlightsDatabase {
     // Adds a flight to database
     public void add(Flight flight) {
         flights.put(flight.getID(), flight);
+        System.out.println("ADDED");
+        flightsQueue.add(flight);
     }
 
     public Flight getFlightByID(int id) {
         return flights.get(id);
     }
 
+    public int countActiveFlights() {
+        return activeFlights.size();
+    }
+
+    public ArrayList<Flight> getActiveFlights() {
+        return activeFlights;
+    }
     // Parse fligths database from file
     public void parseFile(String filePath) {
         try {
@@ -37,7 +55,7 @@ public class FlightsDatabase {
                 }
 
                 int id = Integer.parseInt(parts[0]);
-                int startTime = Integer.parseInt(parts[1]);
+                int startTime = Integer.parseInt(parts[1]) * 60;
                 int departureAirportID = Integer.parseInt(parts[2]);
                 int arrivalAirportID = Integer.parseInt(parts[3]);
                 String name = parts[4];
@@ -48,7 +66,6 @@ public class FlightsDatabase {
 
                 Flight currentFlight = new Flight(id, startTime, departureAirportID,
                     arrivalAirportID, name, aircraftType, flightSpeed, altitude, fuel);
-
 
                 if (currentFlight.isValidFlight()) {
                     this.add(currentFlight);
@@ -72,5 +89,35 @@ public class FlightsDatabase {
         flights.forEach((k, flight) -> {
             flight.print();
         });
+    }
+
+    public void init() {
+        time = 0;
+        integrate(0);
+    }
+
+    public void integrate(double dt) {
+        Flight currentFlight = flightsQueue.peek();
+        time += dt * CONSTANTS.TIME_RATIO;
+        System.out.println("Current controller TIME: " + time);
+
+        while (true) {
+            if (currentFlight != null && currentFlight.getStartTime() <= time) {
+                System.out.println("VALID CONDITION -  START TIME: " + currentFlight.getStartTime());
+                currentFlight.init();
+                flightsQueue.remove(currentFlight);
+                activeFlights.add(currentFlight);
+
+                currentFlight = flightsQueue.peek();
+            } else {
+                if (currentFlight != null) {
+                    System.out.println("IBVALID CONDITION -  START TIME: " + currentFlight.getStartTime());
+                }
+                break;
+            }
+        }
+        for (Flight flight : activeFlights) {
+            flight.integrate(dt);
+        }
     }
 }

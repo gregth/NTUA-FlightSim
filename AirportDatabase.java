@@ -6,17 +6,17 @@ public class AirportDatabase {
     private static final int ROWS = CONSTANTS.ROWS;
     private static final int COLS = CONSTANTS.COLS;
 
-    private boolean[][] airportMap;
+    private Airport[][] airportMap;
 
     // Create Singleton Instance of the AirportDatabase Class
     private static final AirportDatabase instance = new AirportDatabase();
 
     private AirportDatabase() {
         airports = new HashMap<Integer, Airport>();
-        airportMap = new boolean[ROWS][COLS];
+        airportMap = new Airport[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                airportMap[i][j] = false;
+                airportMap[i][j] = null;
             }
         }
     };
@@ -28,8 +28,8 @@ public class AirportDatabase {
     // Adds an airport to database
     public void add(Airport airport) {
         airports.put(airport.getID(), airport);
-        Position p = airport.getPosition();
-        airportMap[p.getX()][p.getY()] = true;
+        Position p = airport.getGridPosition();
+        airportMap[p.getX()][p.getY()] = airport;
 
     }
 
@@ -52,7 +52,7 @@ public class AirportDatabase {
                 String name = parts[3];
                 int direction = Integer.parseInt(parts[4]);
                 int type = Integer.parseInt(parts[5]);
-                boolean open = parts[6].equals("1")? true : false;
+                boolean open = parts[6].equals("1");
 
                 Airport currentAirport = new Airport(id, x, y, name, direction, type, open);
                 this.add(currentAirport);
@@ -70,7 +70,7 @@ public class AirportDatabase {
         });
     }
 
-    public boolean existsAirport(int row, int col) {
+    public Airport findAirport(int row, int col) {
         return airportMap[row][col];
     }
 }

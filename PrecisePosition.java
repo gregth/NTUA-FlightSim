@@ -1,8 +1,8 @@
-public class Position {
-    private int x;
-    private int y;
+public class PrecisePosition {
+    private double x;
+    private double y;
 
-    public Position(int x, int y) {
+    public PrecisePosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -15,15 +15,15 @@ public class Position {
         return this.x + " " + this.y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void update(int x, int y) {
+    public void update(double x, double y) {
         this.x = x;
         this.y = y;
     }

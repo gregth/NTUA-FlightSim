@@ -4,12 +4,12 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.util.*;
 
-public class StatusPane extends JPanel {
+public class MenuPane extends JPanel {
     private static final int STATUS_HEIGHT = CONSTANTS.STATUS_HEIGHT;
     private static final int STATUS_WIDTH = CONSTANTS.STATUS_WIDTH;
     private JLabel simulatedTimeLabel, aircraftsLabel, crashesLabel, landingsLabel, realTimeLabel;
 
-	public StatusPane () {
+	public MenuPane () {
         super();
 		setLayout(new GridBagLayout());
         this.setPreferredSize(new Dimension(STATUS_WIDTH, STATUS_HEIGHT));
