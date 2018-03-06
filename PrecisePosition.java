@@ -27,4 +27,8 @@ public class PrecisePosition {
         this.x = x;
         this.y = y;
     }
+
+    public double euclideanDistance(PrecisePosition A) {
+       return Math.sqrt(Math.pow(A.getX() - x, 2) + Math.pow(A.getY() - y, 2));
+    }
 }
