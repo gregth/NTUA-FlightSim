@@ -69,7 +69,6 @@ public class MapPane extends JPanel {
 
     private void paintAircraft(Graphics2D g2d, Flight flight) {
         String name = "small_n.png";
-        System.out.println("DEGREES :" + flight.getDegrees());
         switch (flight.getDegrees()) {
             case Flight.UP:
                 name = "small_n.png";
@@ -85,10 +84,8 @@ public class MapPane extends JPanel {
         }
         Image image = new ImageIcon("icons/" + name).getImage();
         PrecisePosition p = flight.getAircraftPosition();
-        p.print();
         int iconX = milesToPixels(p).getX()- image.getWidth(null) / 2 ;
         int iconY = milesToPixels(p).getY()- image.getHeight(null) / 2 ;
-        System.out.println("Airxraft location in pixels: " + iconX + " " + iconY);
         g2d.drawImage(image, iconX, iconY, this);
     }
 

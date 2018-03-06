@@ -34,7 +34,6 @@ public class StatusPane extends JPanel {
 	}
 
 	public String displayTime(int timeInSeconds) {
-        System.out.println("TIME IN SECONDS:" + timeInSeconds);
         int minutes = timeInSeconds / 60;
         int seconds = timeInSeconds % 60;
 

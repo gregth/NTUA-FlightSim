@@ -70,9 +70,6 @@ public class FlightsDatabase {
 
                 if (currentFlight.isValidFlight()) {
                     this.add(currentFlight);
-                    currentFlight.print();
-                } else {
-                    currentFlight.print();
                 }
             }
         } catch (IOException e) {
