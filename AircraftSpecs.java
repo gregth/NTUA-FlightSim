@@ -1,8 +1,8 @@
 public class AircraftSpecs {
     private int type;
     private String name;
-    private int landingSpeed, takeOffSpeed; // Landing and Takeoff speed in knots
-    private int maxFlightSpeed; // Normal flight speed in knots
+    private double landingSpeed, takeOffSpeed; // Landing and Takeoff speed in knots
+    private double maxFlightSpeed; // Normal flight speed in knots
     private int maxAlt; // Maximum Altitude in feets
     private int ascDescRate; // Ascent and Descent Rate in ft/min
     private int fuelConsumptionRate; //
@@ -13,9 +13,9 @@ public class AircraftSpecs {
 
         this.type = type;
         this.name = name;
-        this.landingSpeed = landingSpeed;
-        this.takeOffSpeed = landingSpeed;
-        this.maxFlightSpeed = maxFlightSpeed;
+        this.landingSpeed = ((double) landingSpeed) / 3600;
+        this.takeOffSpeed = ((double) landingSpeed) / 3600;
+        this.maxFlightSpeed = ((double) maxFlightSpeed) / 3600;
         this.maxAlt = maxAlt;
         this.ascDescRate = ascDescRate ;
         this.fuelConsumptionRate = fuelConsumptionRate;
@@ -26,11 +26,11 @@ public class AircraftSpecs {
         return type;
     }
 
-    public int getLandingSpeed() {
+    public double  getLandingSpeed() {
         return landingSpeed;
     }
 
-    public int getTakeOffSpeed() {
+    public double  getTakeOffSpeed() {
         return takeOffSpeed;
     }
 
@@ -38,7 +38,7 @@ public class AircraftSpecs {
         return maxAlt;
     }
 
-    public int getMaxFlightSpeed() {
+    public double getMaxFlightSpeed() {
         return maxFlightSpeed;
     }
 
