@@ -5,10 +5,11 @@ public class Airport {
     public static final int NORTH = 1, EAST = 2, SOUTH = 3, WEST = 4;
 	private int id, direction, category;
     private Position position; // In miles
+    private PrecisePosition precisePosition;
     private Position gridPosition;
 	private boolean open;
 	private String name;
-    private Position gatePoint;
+    private PrecisePosition gatePoint;
 
 	public Airport(int id, int positionRow, int positionColumn, String name, int direction, int category, boolean open) {
         this.id = id;
@@ -18,12 +19,20 @@ public class Airport {
 		this.category = category;
         this.open = open;
 
-        int x = CONSTANTS.TILE_SIZE_IN_MILES * positionColumn + CONSTANTS.TILE_SIZE_IN_MILES / 2;
-        int y = CONSTANTS.TILE_SIZE_IN_MILES * positionRow + CONSTANTS.TILE_SIZE_IN_MILES / 2;
-        this.position = new Position(x, y);
+        double x = CONSTANTS.TILE_SIZE_IN_MILES * positionColumn + CONSTANTS.TILE_SIZE_IN_MILES / 2;
+        double y = CONSTANTS.TILE_SIZE_IN_MILES * positionRow + CONSTANTS.TILE_SIZE_IN_MILES / 2;
+        this.precisePosition = new PrecisePosition(x, y);
+        this.position = new Position((int) x, (int) y);
         this.gatePoint = findGatePoint();
 	}
 
+    public PrecisePosition getPrecisePosition() {
+        return precisePosition;
+    }
+
+    public int getDegrees() {
+        return (direction - 1) * 90;
+    }
 	public boolean isOpen() {
 		return open;
 	}
@@ -52,7 +61,7 @@ public class Airport {
 		return name;
 	}
 
-	public Position getGatePoint() {
+	public PrecisePosition getGatePoint() {
 		return gatePoint;
 	}
 
@@ -83,9 +92,10 @@ public class Airport {
     }
 
     // Findts the gate point (place for entrance) for the airport area
-    private Position findGatePoint() {
-        int x = position.getX();
-        int y = position.getY();
+    private PrecisePosition findGatePoint() {
+        double x = (double) position.getX();
+        double y = (double) position.getY();
+        System.out.println("GATEE" + x + "m" + y);
 
         switch (this.getDirection()) {
             case Airport.NORTH :
@@ -101,7 +111,7 @@ public class Airport {
                 x -= CONSTANTS.TILE_SIZE_IN_MILES / 2;
                 break;
         }
-        return new Position(x, y);
+        return new PrecisePosition(x, y);
 
     }
 }
