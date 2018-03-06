@@ -140,7 +140,6 @@ public class FlightsDatabase {
                 if (f1 != f2 &&
                         f1.getAircraftPosition().euclideanDistance(f2.getAircraftPosition()) <= CRASH_DISTANCE &&
                         Math.abs(f1.getAltitude() - f2.getAltitude()) <= CRASH_LATITUDE_DIFF) {
-                    System.out.println("THAAAAAAAAAAAAAT");
                     f1.setCrashed();
                     f2.setCrashed();
                 }
