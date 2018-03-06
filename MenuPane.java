@@ -1,7 +1,10 @@
 import java.awt.*;
+import java.awt.event.*;  
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
 import java.util.*;
 
 public class MenuPane extends JPanel {
@@ -14,41 +17,70 @@ public class MenuPane extends JPanel {
 		setLayout(new GridBagLayout());
         this.setPreferredSize(new Dimension(STATUS_WIDTH, STATUS_HEIGHT));
 
-		simulatedTimeLabel = new JLabel("Simulated Time: 00:00", JLabel.LEFT);
-		this.add(simulatedTimeLabel);
+        JButton startButton = new JButton("Start");  
+        startButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                System.out.println("click start");
+            }
+        });
+        this.add(startButton);
 
-		realTimeLabel = new JLabel("Real Time: 00:00", JLabel.LEFT);
-		this.add(realTimeLabel);
+        JButton stopButton = new JButton("Stop");  
+        stopButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                System.out.println("click stop");
+            }
+        });
+        this.add(stopButton);
 
-		aircraftsLabel = new JLabel("Aircrafts: 0", JLabel.LEFT);
-        this.add(aircraftsLabel);
+        JButton loadButton = new JButton("Load");  
+        loadButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                String mapId = JOptionPane.showInputDialog("Enter Map ID: ");
+                System.out.println("Entered map id " + mapId);
+            }
+        });
+        this.add(loadButton);
 
-		crashesLabel = new JLabel("Crashes: 0", JLabel.LEFT);
-        this.add(crashesLabel);
+        MenuPane that = this;
+        JButton airportsButton = new JButton("Airports");  
+        airportsButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                JOptionPane.showMessageDialog(that, "Airports\nNew line");
+            }
+        });
+        this.add(airportsButton);
 
-		landingsLabel = new JLabel("Landings: 0", JLabel.LEFT);
-        this.add(landingsLabel);
+        JButton aircraftsButton = new JButton("Aircrafts");  
+        aircraftsButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                JOptionPane.showMessageDialog(that, "Aircrafts\nNew line");
 
-		setBackground(Color.CYAN);
+            }
+        });
+        this.add(aircraftsButton);
+
+        JButton flightsButton = new JButton("Flights");  
+        flightsButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                JOptionPane.showMessageDialog(that, "Flights\nNew line");
+            }
+        });
+        this.add(flightsButton);
+
+        JButton exitButton = new JButton("Exit");  
+        exitButton.addActionListener(new ActionListener(){  
+            public void actionPerformed(ActionEvent e){  
+                System.exit(0);
+            }
+        });
+        this.add(exitButton);
+
+		setBackground(Color.GRAY);
         this.repaint();
-	}
-
-	public String displayTime(int timeInSeconds) {
-        System.out.println("TIME IN SECONDS:" + timeInSeconds);
-        int minutes = timeInSeconds / 60;
-        int seconds = timeInSeconds % 60;
-
-        String minutesString = String.format("%02d", minutes);
-        String secondsString = String.format("%02d", seconds);
-		return new String(minutesString + ":" + secondsString);
 	}
 
 	public void refresh() {
         Universe myUniverse = Universe.getInstance();
-		landingsLabel.setText("Landings: " + myUniverse.getLandings());
-		aircraftsLabel.setText("Aircrafts: " + myUniverse.getAircrafts());
-		crashesLabel.setText("Crashes: " + myUniverse.getCrashes());
-		simulatedTimeLabel.setText("Simulated Time: " + displayTime(myUniverse.getSimulatorClock()));
-		realTimeLabel.setText("Real Time: " + displayTime((int)(CONSTANTS.TIME_RATIO * myUniverse.getSimulatorClock())));
 	}
 }
