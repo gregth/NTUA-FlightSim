@@ -15,7 +15,6 @@ public class Map {
         return instance;
     }
 
-    // Parse map from file
     public void parseFile(String filePath) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filePath))));
