@@ -292,4 +292,10 @@ public class Flight {
         else return 0;
     }
 
+    public String stringifyActiveFlight() {
+        String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + departureAirport.getName() +
+            " | Speed: " + getCurrentSpeed() * 3600 + " knots | Altitude" + altitude + " feets | Remaining Fuel: " + fuel + " kg\n";
+        return s;
+    }
+
 }

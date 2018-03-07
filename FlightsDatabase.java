@@ -140,4 +140,12 @@ public class FlightsDatabase {
             }
         }
     }
+
+    public String stringifyActiveFlights() {
+        StringBuilder result = new StringBuilder();
+        for (Flight flight : activeFlights) {
+            result.append(flight.stringifyActiveFlight());
+        }
+        return result.toString();
+    }
 }
