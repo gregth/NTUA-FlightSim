@@ -61,7 +61,7 @@ public class MapPane extends JPanel {
 		g2d.drawRect(startX, startY, TILE_SIZE , TILE_SIZE);
 
         // Draw airport pin, if it exists
-        Airport airport = AirportDatabase.getInstance().findAirport(tileRow, tileColumn);
+        Airport airport = myUniverse.airportsDB.findAirport(tileRow, tileColumn);
         if (airport != null) {
             Image image = new ImageIcon("icons/airport.png").getImage();
             int iconX = milesToPixels(airport.getPosition()).getX() - image.getWidth(null) / 2 ;

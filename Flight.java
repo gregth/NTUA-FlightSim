@@ -18,7 +18,8 @@ public class Flight {
     public Flight(int id, int startTime, int departureAirportID, int arrivalAirportID,
         String name, int aircraftType, int flightSpeed, int altitude, int fuel) {
 
-        AirportDatabase airportsDB = AirportDatabase.getInstance();
+        myUniverse = Universe.getInstance();
+        AirportDatabase airportsDB = myUniverse.airportsDB;
         AircraftSpecsDatabase aircraftsDB = AircraftSpecsDatabase.getInstance();
 
         this.id = id;

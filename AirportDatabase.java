@@ -8,10 +8,7 @@ public class AirportDatabase {
 
     private Airport[][] airportMap;
 
-    // Create Singleton Instance of the AirportDatabase Class
-    private static final AirportDatabase instance = new AirportDatabase();
-
-    private AirportDatabase() {
+    public AirportDatabase(String filePath) {
         airports = new HashMap<Integer, Airport>();
         airportMap = new Airport[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
@@ -19,11 +16,8 @@ public class AirportDatabase {
                 airportMap[i][j] = null;
             }
         }
+        parseFile(filePath);
     };
-
-    public static AirportDatabase getInstance() {
-        return instance;
-    }
 
     // Adds an airport to database
     public void add(Airport airport) {

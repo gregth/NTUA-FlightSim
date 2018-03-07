@@ -8,7 +8,7 @@ public class Universe {
     private ArrayList<String> messages;
 
     public AircraftSpecsDatabase airSpecsDB;
-    public AirportDatabase airportDB;
+    public AirportDatabase airportsDB;
     public Map myMap;
     public FlightsDatabase flightDB;
     public Display display;
@@ -23,8 +23,7 @@ public class Universe {
     };
 
     public void constructDatabases() {
-        airportDB = AirportDatabase.getInstance();
-        airportDB.parseFile("data/airports_default.txt");
+        airportsDB = new AirportDatabase("data/airports_default.txt");
 
         airSpecsDB = AircraftSpecsDatabase.getInstance();
         airSpecsDB.add(new AircraftSpecs(CONSTANTS.SINGLE_ENGINE, "Single-Engine", 60, 110, 280, 8000, 700, 3));
@@ -42,6 +41,7 @@ public class Universe {
 
     public void loadNew(String id) {
         myMap = new Map("data/world_" + id + ".txt");
+        airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
     }
 
     public void init() {
