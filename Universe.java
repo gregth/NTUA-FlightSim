@@ -32,9 +32,7 @@ public class Universe {
         airSpecsDB.add(new AircraftSpecs(CONSTANTS.JET, "Jet", 140, 280, 16000, 28000, 2300, 15));
 
         myMap = new Map("data/world_default.txt");
-
-        flightDB = FlightsDatabase.getInstance();
-        flightDB.parseFile("data/flights_default.txt");
+        flightDB = new FlightsDatabase("data/flights_default.txt");
 
         display = new Display();
 
@@ -55,6 +53,7 @@ public class Universe {
     public void loadNew(String id) {
         myMap = new Map("data/world_" + id + ".txt");
         airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
+        flightDB = new FlightsDatabase("data/flights_" + id + ".txt");
     }
 
     public void init() {
@@ -110,7 +109,7 @@ public class Universe {
     }
 
     public void integrate(double dt) {
-        aircrafts = FlightsDatabase.getInstance().countActiveFlights();
+        aircrafts = flightDB.countActiveFlights();
         flightDB.integrate(dt);
         increaseSimulatorClock(CONSTANTS.DELAY);
         display.refresh();

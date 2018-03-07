@@ -14,20 +14,14 @@ public class FlightsDatabase {
 
     private int time;
 
-    // Create Singleton Instance of the FlightsDatabase Class
-    private static final FlightsDatabase instance = new FlightsDatabase();
-
-    private FlightsDatabase() {
+    public FlightsDatabase(String filePath) {
         flights = new HashMap<Integer, Flight>();
         comparator = new FlightComparator();
         flightsQueue = new PriorityQueue<Flight>(1, comparator);
         activeFlights = new ArrayList<Flight>();
         myUniverse = Universe.getInstance();
+        parseFile(filePath);
     };
-
-    public static FlightsDatabase getInstance() {
-        return instance;
-    }
 
     // Adds a flight to database
     public void add(Flight flight) {
