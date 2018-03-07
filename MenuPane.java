@@ -23,15 +23,18 @@ public class MenuPane extends JPanel {
         startButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 System.out.println("click start");
+                myUniverse.loadNew(myUniverse.getFileID());
                 myUniverse.startTimer();
             }
         });
         this.add(startButton);
 
+        JFrame that = (JFrame) myUniverse.getDisplay();
         JButton stopButton = new JButton("Stop");
         stopButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 System.out.println("click stop");
+                JOptionPane.showMessageDialog(that, "Simulation stopped by user");
                 myUniverse.stopTimer();
             }
         });
@@ -40,15 +43,16 @@ public class MenuPane extends JPanel {
         JButton loadButton = new JButton("Load");
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                String mapId = JOptionPane.showInputDialog("Enter Map ID: ");
-                if (mapId != null) {
-                    myUniverse.loadNew(mapId);
+                String id = JOptionPane.showInputDialog("Enter Simulation Files ID: ");
+                if (id != null) {
+                    myUniverse.stopTimer();
+                    myUniverse.setFileID(id);
+                    myUniverse.loadNew(id);
                 }
             }
         });
         this.add(loadButton);
 
-        MenuPane that = this;
         JButton airportsButton = new JButton("Airports");
         airportsButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){

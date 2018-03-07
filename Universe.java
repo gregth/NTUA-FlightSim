@@ -15,6 +15,8 @@ public class Universe {
     private Timer timer;
     private ArrayList<String> messages;
 
+    private String fileID = "default";
+
     private Universe() {
     };
 
@@ -37,11 +39,13 @@ public class Universe {
         airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
         flightDB = new FlightsDatabase("data/flights_" + id + ".txt");
         display = new Display();
+        this.init();
     }
 
     // Tells database to init simulation
-    public void init() {
+    private void init() {
         flightDB.init();
+        display.refresh();
     }
 
     // Sets timer
@@ -117,4 +121,11 @@ public class Universe {
         return flightDB;
     }
 
+    public String getFileID() {
+        return fileID;
+    }
+
+    public void setFileID(String id) {
+        fileID = id;
+    }
 }
