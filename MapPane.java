@@ -44,7 +44,7 @@ public class MapPane extends JPanel {
     }
 
     private void paintAircrafts(Graphics2D g2d) {
-        ArrayList<Flight> flights = FlightsDatabase.getInstance().getActiveFlights();
+        ArrayList<Flight> flights = myUniverse.getFlightsDatabase().getActiveFlights();
         for (Flight flight : flights) {
             paintAircraft(g2d, flight);
         }
@@ -52,7 +52,7 @@ public class MapPane extends JPanel {
 
     // First column is number 0, first row is number 0
     private void paintTile(Graphics2D g2d, int tileRow, int tileColumn) {
-        Color color = myUniverse.myMap.getColor(tileRow, tileColumn);
+        Color color = myUniverse.getMap().getColor(tileRow, tileColumn);
 		g2d.setColor(color);
         int startX = tileColumn * TILE_SIZE;
         int startY = tileRow * TILE_SIZE;
@@ -61,7 +61,7 @@ public class MapPane extends JPanel {
 		g2d.drawRect(startX, startY, TILE_SIZE , TILE_SIZE);
 
         // Draw airport pin, if it exists
-        Airport airport = myUniverse.airportsDB.findAirport(tileRow, tileColumn);
+        Airport airport = myUniverse.getAirportsDatabase().findAirport(tileRow, tileColumn);
         if (airport != null) {
             Image image = new ImageIcon("icons/airport.png").getImage();
             int iconX = milesToPixels(airport.getPosition()).getX() - image.getWidth(null) / 2 ;

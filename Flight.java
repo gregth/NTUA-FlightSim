@@ -19,7 +19,7 @@ public class Flight {
         String name, int aircraftType, int flightSpeed, int altitude, int fuel) {
 
         myUniverse = Universe.getInstance();
-        AirportDatabase airportsDB = myUniverse.airportsDB;
+        AirportDatabase airportsDB = myUniverse.getAirportsDatabase();
         AircraftSpecsDatabase aircraftsDB = AircraftSpecsDatabase.getInstance();
 
         this.id = id;

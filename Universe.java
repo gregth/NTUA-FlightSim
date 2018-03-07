@@ -5,14 +5,15 @@ import javax.swing.Timer;
 public class Universe {
 	private int simulatorClock, aircrafts, crashes, landings;
     private static final Universe instance = new Universe();
-    private ArrayList<String> messages;
 
-    public AircraftSpecsDatabase airSpecsDB;
-    public AirportDatabase airportsDB;
-    public Map myMap;
-    public FlightsDatabase flightDB;
+    private AircraftSpecsDatabase airSpecsDB;
+    private AirportDatabase airportsDB;
+    private Map myMap;
+    private FlightsDatabase flightDB;
+
     public Display display;
     public Timer timer;
+    private ArrayList<String> messages;
 
     private Universe() {
         simulatorClock = 0;
@@ -37,6 +38,18 @@ public class Universe {
 
         display = new Display();
 
+    }
+
+    public AirportDatabase getAirportsDatabase() {
+        return airportsDB;
+    }
+
+    public Map getMap() {
+        return myMap;
+    }
+
+    public FlightsDatabase getFlightsDatabase() {
+        return flightDB;
     }
 
     public void loadNew(String id) {
