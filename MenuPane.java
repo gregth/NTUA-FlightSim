@@ -41,7 +41,9 @@ public class MenuPane extends JPanel {
         loadButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String mapId = JOptionPane.showInputDialog("Enter Map ID: ");
-                System.out.println("Entered map id " + mapId);
+                if (mapId != null) {
+                    myUniverse.loadNew(mapId);
+                }
             }
         });
         this.add(loadButton);
