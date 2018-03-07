@@ -23,9 +23,9 @@ public class Universe {
     // Updated universe after time dt in seconds
     public void integrate(double dt) {
         aircrafts = flightDB.countActiveFlights();
+        display.refresh();
         flightDB.integrate(dt);
         increaseSimulatorClock(CONSTANTS.DELAY);
-        display.refresh();
     }
 
     public void loadNew(String id) {
@@ -33,14 +33,18 @@ public class Universe {
         aircrafts = 0;
         crashes = 0;
         landings = 0;
-
         messages = new ArrayList<String>();
         myMap = new Map("data/world_" + id + ".txt");
         airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
         flightDB = new FlightsDatabase("data/flights_" + id + ".txt");
-        display = new Display();
+        display.putContent();
         display.refresh();
         this.init();
+    }
+
+    public void createDisplay() {
+        display = new Display();
+        display.putContent();
     }
 
     // Tells database to init simulation
@@ -55,6 +59,7 @@ public class Universe {
     }
 
     public void startTimer() {
+        display.refresh();
         timer.start();
     }
 

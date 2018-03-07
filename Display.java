@@ -1,4 +1,5 @@
 import javax.swing.JFrame;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.*;
@@ -21,8 +22,9 @@ public class Display extends JFrame {
         this.setResizable(false);
 		this.setLocationRelativeTo(null);
         this.setVisible(true);
+    }
 
-
+    public void putContent() {
 		JPanel wrapPane= new JPanel();
 		wrapPane.setLayout(new BorderLayout());
 		wrapPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
