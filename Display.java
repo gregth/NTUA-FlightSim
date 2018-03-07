@@ -3,8 +3,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.*;
 
-public class Display {
-    private JFrame frame;
+public class Display extends JFrame {
     private StatusPane statusPane;
     private MenuPane menuPane;
     private SimulationPane simulationPane;
@@ -13,21 +12,21 @@ public class Display {
     private static final int FRAME_HEIGHT= CONSTANTS.FRAME_HEIGHT;
 
     public Display() {
-		JFrame frame = new JFrame("Medialab Simulator");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        frame.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        frame.setMaximumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
-        frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        super("Medialab Simulator");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.pack();
+        this.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        this.setMinimumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        this.setMaximumSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
+        this.setResizable(false);
+		this.setLocationRelativeTo(null);
+        this.setVisible(true);
 
 
 		JPanel wrapPane= new JPanel();
 		wrapPane.setLayout(new BorderLayout());
 		wrapPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        frame.add(wrapPane);
+        this.add(wrapPane);
 
         statusPane = new StatusPane();
         simulationPane = new SimulationPane();
