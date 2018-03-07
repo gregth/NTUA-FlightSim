@@ -25,12 +25,7 @@ public class Universe {
 
     public void constructDatabases() {
         airportsDB = new AirportDatabase("data/airports_default.txt");
-
         airSpecsDB = AircraftSpecsDatabase.getInstance();
-        airSpecsDB.add(new AircraftSpecs(CONSTANTS.SINGLE_ENGINE, "Single-Engine", 60, 110, 280, 8000, 700, 3));
-        airSpecsDB.add(new AircraftSpecs(CONSTANTS.TURBO, "Turbodrom", 100, 220, 4200, 16000, 1200, 9));
-        airSpecsDB.add(new AircraftSpecs(CONSTANTS.JET, "Jet", 140, 280, 16000, 28000, 2300, 15));
-
         myMap = new Map("data/world_default.txt");
         flightDB = new FlightsDatabase("data/flights_default.txt");
 
