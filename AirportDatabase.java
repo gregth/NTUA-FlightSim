@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.lang.StringBuilder;
 
 public class AirportDatabase {
     private HashMap<Integer, Airport> airports;
@@ -24,7 +25,6 @@ public class AirportDatabase {
         airports.put(airport.getID(), airport);
         Position p = airport.getGridPosition();
         airportMap[p.getX()][p.getY()] = airport;
-
     }
 
     public Airport getAirportByID(int id) {
@@ -66,5 +66,14 @@ public class AirportDatabase {
 
     public Airport findAirport(int row, int col) {
         return airportMap[row][col];
+    }
+
+    public String stringify() {
+        String airportString;
+        StringBuilder result = new StringBuilder();
+        airports.forEach((k, airport) -> {
+            result.append(airport.stringify());
+        });
+        return result.toString();
     }
 }
