@@ -7,10 +7,10 @@ public class Flight {
     private String name;
     private AircraftSpecs aircraft;
     private double flightSpeed;
-    private int altitude, fuel, currentDuration, degrees, currentAltitude;
+    private int desiredAltitude, fuel, currentDuration, degrees, currentAltitude;
     private PrecisePosition aircraftPosition;
     private boolean exitedDepartureAirport, enteredArrivalAirport;
-    private boolean crashed, landed, reachedDestination, active, fixedAltitude;
+    private boolean crashed, landed, reachedDestination, active, fixedAltitude, descending;
 
     public static final int LEFT = 270, RIGHT = 90, UP = 0, DOWN = 180;
     private Universe myUniverse;
@@ -29,7 +29,7 @@ public class Flight {
         this.arrivalAirport = airportsDB.getAirportByID(arrivalAirportID);
         this.aircraft = aircraftsDB.getAircraftSpecsByType(aircraftType);
         this.flightSpeed = ((double) flightSpeed) / 3600;
-        this.altitude = altitude;
+        this.desiredAltitude = altitude;
         this.fuel = fuel;
         Position dp = departureAirport.getPosition();
         this.aircraftPosition = new PrecisePosition(dp.getX(), dp.getY());
@@ -38,10 +38,11 @@ public class Flight {
         this.reachedDestination = false;
         this.fixedAltitude = false;
         this.myUniverse = Universe.getInstance();
-        this.currentAltitude = 0;
+        this.currentAltitude = myUniverse.getMap().getMapHeightAtLocation(departureAirport.getPrecisePosition());
         this.crashed = false;
         this.active = false;
         this.landed = false;
+        this.descending = false;
     }
 
     private double orthoDistance(PrecisePosition a, PrecisePosition b) {
@@ -122,10 +123,10 @@ public class Flight {
         if (flightSpeed > aircraft.getMaxFlightSpeed()) {
             return false;
         }
-        if (altitude > aircraft.getMaxAlt()) {
+        if (desiredAltitude > aircraft.getMaxAlt()) {
             return false;
         }
-        if (altitude > aircraft.getMaxAlt()) {
+        if (desiredAltitude > aircraft.getMaxAlt()) {
             return false;
         }
         if (fuel > aircraft.getMaxFuelWeight()) {
@@ -152,9 +153,12 @@ public class Flight {
 
     public void integrate(double dt) {
         reduceFuel(dt);
-        if (currentAltitude <= myUniverse.getMap().getMapHeightAtLocation(aircraftPosition) && active ){
+        adjustAltitude(dt);
+        int terrainAlt = myUniverse.getMap().getMapHeightAtLocation(aircraftPosition);
+        if (currentAltitude <= terrainAlt &&
+            exitedDepartureAirport && !enteredArrivalAirport && active ){
             myUniverse.addMessage("[Flight ID: " + id + "] CRASHED DUE TO ALTITUDE");
-            System.out.println("[Flight ID: " + id + "] CRASHED DUE TO ALTITUDE");
+            System.out.println("[Flight ID: " + id + "] CRASHED DUE TO ALTITUDE | Terrain alt: " + terrainAlt );
             crashed = true;
             myUniverse.increaseCrashes();
             active = false;
@@ -176,9 +180,11 @@ public class Flight {
             landed = true;
             active = false;
         }
+        /*
         System.out.println("Flight ID: " + id + " | Speed: " + getCurrentSpeed() +
                 " | Consumtion Rate " + aircraft.getFuelConsumptionRate() + " | Fuel: " + fuel +
                 " | EST: "  + timeRemaining() +  " | Altitude: " + currentAltitude);
+        */
     }
 
     private void reduceFuel(double dt) {
@@ -218,7 +224,19 @@ public class Flight {
     }
 
     private void adjustAltitude(double dt) {
-
+        int airportAltitude = myUniverse.getMap().getMapHeightAtLocation(arrivalAirport.getPrecisePosition());
+        int descendDistance = currentAltitude - airportAltitude;
+        double timeToDescend = (double) (descendDistance) / aircraft.getAscDescRate();
+        // System.out.println("Time Remaining: " + timeRemaining() + "DescendTime: " + timeToDescend);
+        if (desiredAltitude > currentAltitude && !descending) {
+            int newAlt = (int) (currentAltitude + dt * aircraft.getAscDescRate());
+            if (newAlt <= desiredAltitude) {
+               currentAltitude = desiredAltitude;
+            }
+        } else if (timeRemaining() <= timeToDescend) {
+            descending = true;
+            currentAltitude -= dt * aircraft.getAscDescRate();
+        }
     }
 
     // Returns true if current flight position is in departure airport tile
