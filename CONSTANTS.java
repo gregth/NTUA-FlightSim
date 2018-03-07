@@ -27,7 +27,7 @@ public class CONSTANTS {
     public static final int SIMULATION_PANE_WIDTH = MAP_WIDTH + MESSAGES_WIDTH;
     public static final int SIMULATION_PANE_HEIGHT = MAP_HEIGHT;
 
-    public static final double TIME_RATIO = 300.0 / 5;
+    public static final double TIME_RATIO = 60.0 / 5;
     public static final double PIXEL_TO_MILES_RATIO = 16.0 / 20.0;
 
 
