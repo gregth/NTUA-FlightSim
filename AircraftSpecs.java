@@ -22,6 +22,10 @@ public class AircraftSpecs {
         this.maxFuelWeight = maxFuelWeight;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getType() {
         return type;
     }
