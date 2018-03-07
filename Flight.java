@@ -223,7 +223,7 @@ public class Flight {
 
     // Return aircraft current speed in miles per second
     private double getCurrentSpeed() {
-        if (enteredArrivalAirport || exitedDepartureAirport) {
+        if (enteredArrivalAirport || !exitedDepartureAirport) {
             return aircraft.getLandingSpeed();
         } else {
             return flightSpeed;
