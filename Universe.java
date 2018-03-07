@@ -31,14 +31,17 @@ public class Universe {
         airSpecsDB.add(new AircraftSpecs(CONSTANTS.TURBO, "Turbodrom", 100, 220, 4200, 16000, 1200, 9));
         airSpecsDB.add(new AircraftSpecs(CONSTANTS.JET, "Jet", 140, 280, 16000, 28000, 2300, 15));
 
-        myMap = Map.getInstance();
-        myMap.parseFile("data/world_default.txt");
+        myMap = new Map("data/world_default.txt");
 
         flightDB = FlightsDatabase.getInstance();
         flightDB.parseFile("data/flights_default.txt");
 
         display = new Display();
 
+    }
+
+    public void loadNew(String id) {
+        myMap = new Map("data/world_" + id + ".txt");
     }
 
     public void init() {

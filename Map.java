@@ -5,15 +5,10 @@ import java.awt.*;
 public class Map {
     private int[][] map;
 
-    private static final Map instance = new Map();
-
-    private Map() {
+    public Map(String filePath) {
         map = new int[CONSTANTS.ROWS][CONSTANTS.COLS];
+        parseFile(filePath);
     };
-
-    public static Map getInstance() {
-        return instance;
-    }
 
     // Parse map from file
     public void parseFile(String filePath) {

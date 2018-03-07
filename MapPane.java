@@ -14,6 +14,8 @@ public class MapPane extends JPanel {
     private static final int COLS = CONSTANTS.COLS;
     private static final int TILE_SIZE = CONSTANTS.TILE_SIZE;
 
+    private Universe myUniverse;
+
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -30,6 +32,7 @@ public class MapPane extends JPanel {
         this.setMaximumSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
         this.setBackground(Color.BLACK);
         this.repaint();
+        myUniverse = Universe.getInstance();
 	}
 
     private void paintMapTiles(Graphics2D g2d) {
@@ -49,7 +52,7 @@ public class MapPane extends JPanel {
 
     // First column is number 0, first row is number 0
     private void paintTile(Graphics2D g2d, int tileRow, int tileColumn) {
-        Color color = Map.getInstance().getColor(tileRow, tileColumn);
+        Color color = myUniverse.myMap.getColor(tileRow, tileColumn);
 		g2d.setColor(color);
         int startX = tileColumn * TILE_SIZE;
         int startY = tileRow * TILE_SIZE;
