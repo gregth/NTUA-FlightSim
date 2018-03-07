@@ -16,11 +16,6 @@ public class Universe {
     private ArrayList<String> messages;
 
     private Universe() {
-        simulatorClock = 0;
-        aircrafts = 0;
-        crashes = 0;
-        landings = 0;
-        messages = new ArrayList<String>();
     };
 
     // Updated universe after time dt in seconds
@@ -32,6 +27,12 @@ public class Universe {
     }
 
     public void loadNew(String id) {
+        simulatorClock = 0;
+        aircrafts = 0;
+        crashes = 0;
+        landings = 0;
+
+        messages = new ArrayList<String>();
         myMap = new Map("data/world_" + id + ".txt");
         airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
         flightDB = new FlightsDatabase("data/flights_" + id + ".txt");
