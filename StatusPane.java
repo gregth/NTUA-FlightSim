@@ -47,7 +47,7 @@ public class StatusPane extends JPanel {
 		simulatedTimeLabel.setText(" Simulated Time: " + displayTime(myUniverse.getSimulatorClock()) + " | ");
 		aircraftsLabel.setText(" Aircrafts: " + myUniverse.getAircrafts() + " | ");
 		crashesLabel.setText(" Crashes: " + myUniverse.getCrashes() + " | ");
-		realTimeLabel.setText(" Real Time: " + displayTime((int)(CONSTANTS.TIME_RATIO * myUniverse.getSimulatorClock())) + " | ");
+		realTimeLabel.setText(" Real Time: " + displayTime((int)(CONSTANTS.TIME_RATIO * (double) myUniverse.getSimulatorClock())) + " | ");
 		landingsLabel.setText("Landings: " + myUniverse.getLandings());
 	}
 }
