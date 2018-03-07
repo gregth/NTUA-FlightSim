@@ -124,6 +124,7 @@ public class FlightsDatabase {
 
         if (activeFlights.isEmpty() && flightsQueue.isEmpty()) {
             myUniverse.addMessage("END OF SIMULATION");
+            myUniverse.stopTimer();
         }
 
     }
