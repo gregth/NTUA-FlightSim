@@ -64,7 +64,6 @@ public class Flight {
             return time;
         }
         if (enteredArrivalAirport) {
-            System.out.println("here");
             time += orthoDistance(arrivalAirport.getPrecisePosition(), aircraftPosition) / aircraft.getLandingSpeed();
             return time;
         }
@@ -83,8 +82,8 @@ public class Flight {
 		return startTime;
 	}
 
-    public int getAltitude() {
-        return altitude;
+    public int getCurrentAltitude() {
+        return currentAltitude;
     }
 
 	public int getID() {
@@ -136,7 +135,7 @@ public class Flight {
     }
 
     public void print() {
-        System.out.println("Flight: " + id + " time:" + startTime + " name:" + name + " alt:" + altitude + "fuel: " + fuel);
+        System.out.println("Flight: " + id + " time:" + startTime + " name:" + name + " alt:" + currentAltitude + "fuel: " + fuel);
         System.out.println("Printing Departure Airport:");
         departureAirport.print();
         System.out.println("Printing Arrival Airport");
@@ -153,7 +152,13 @@ public class Flight {
 
     public void integrate(double dt) {
         reduceFuel(dt);
-        if (fuel <= 0 && active) {
+        if (currentAltitude <= myUniverse.getMap().getMapHeightAtLocation(aircraftPosition) && active ){
+            myUniverse.addMessage("[Flight ID: " + id + "] CRASHED DUE TO ALTITUDE");
+            System.out.println("[Flight ID: " + id + "] CRASHED DUE TO ALTITUDE");
+            crashed = true;
+            myUniverse.increaseCrashes();
+            active = false;
+        } else if (fuel <= 0 && active) {
             myUniverse.addMessage("[Flight ID: " + id + "] RUN OUT OF FUEL");
             System.out.println("[Flight ID: " + id + "] RUN OUT OF FUEL");
             crashed = true;
@@ -173,7 +178,7 @@ public class Flight {
         }
         System.out.println("Flight ID: " + id + " | Speed: " + getCurrentSpeed() +
                 " | Consumtion Rate " + aircraft.getFuelConsumptionRate() + " | Fuel: " + fuel +
-                " | EST: "  + timeRemaining() +  " | Altitude: " + altitude);
+                " | EST: "  + timeRemaining() +  " | Altitude: " + currentAltitude);
     }
 
     private void reduceFuel(double dt) {
@@ -210,6 +215,10 @@ public class Flight {
         if (enteredArrivalAirport) {
         }
         aircraftPosition.update(newX, newY);
+    }
+
+    private void adjustAltitude(double dt) {
+
     }
 
     // Returns true if current flight position is in departure airport tile
@@ -287,6 +296,7 @@ public class Flight {
                 } else if (degrees == arrivalAirport.getDegrees())  {
                     enteredArrivalAirport = true;
                     myUniverse.addMessage("[Flight ID: " + id + "] ENTERED Destination Airport Area");
+                    System.out.println("[Flight ID: " + id + "] ENTERED Destination Airport Area");
                 }
             }
         }
@@ -306,7 +316,7 @@ public class Flight {
     // String format for active flights
     public String stringifyActiveFlight() {
         String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + arrivalAirport.getName() +
-            " | Speed: " + getCurrentSpeed() * 3600 + " knots | Altitude: " + altitude + " feets | Remaining Fuel: " + fuel + " kg\n";
+            " | Speed: " + getCurrentSpeed() * 3600 + " knots | Altitude: " + currentAltitude + " feets | Remaining Fuel: " + fuel + " kg\n";
         return s;
     }
 

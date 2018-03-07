@@ -94,4 +94,10 @@ public class Map {
         }
         return new Color(red, green, blue);
     }
+
+    public int getMapHeightAtLocation(PrecisePosition p) {
+        int x = (int) (p.getX() / CONSTANTS.TILE_SIZE_IN_MILES);
+        int y = (int) (p.getY() / CONSTANTS.TILE_SIZE_IN_MILES);
+        return map[x][y];
+    }
 }

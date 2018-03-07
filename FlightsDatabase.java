@@ -10,7 +10,7 @@ public class FlightsDatabase {
     private Universe myUniverse;
 
     private static final double CRASH_DISTANCE = 2;
-    private static final double CRASH_LATITUDE_DIFF = 2;
+    private static final double CRASH_ALT = 500;
 
     private int time;
 
@@ -132,9 +132,11 @@ public class FlightsDatabase {
     public void checkForColissions() {
         for (Flight f1 : activeFlights) {
             for (Flight f2 : activeFlights) {
-                if (f1 != f2 &&
-                        f1.getAircraftPosition().euclideanDistance(f2.getAircraftPosition()) <= CRASH_DISTANCE &&
-                        Math.abs(f1.getAltitude() - f2.getAltitude()) <= CRASH_LATITUDE_DIFF) {
+                double distance = f1.getAircraftPosition().euclideanDistance(f2.getAircraftPosition());
+                double altDif = Math.abs(f1.getCurrentAltitude() - f2.getCurrentAltitude());
+
+                if (f1.getID() != f2.getID() && distance <= CRASH_DISTANCE && altDif <= CRASH_ALT) {
+                    System.out.println("F1ID: " + f1.getID() + " F2ID: " + f2.getID() + " Distance: " + distance + " AltDif: " + altDif);
                     f1.setCrashed();
                     f2.setCrashed();
                 }
