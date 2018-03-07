@@ -6,12 +6,12 @@ public class Flight {
     private Airport departureAirport, arrivalAirport;
     private String name;
     private AircraftSpecs aircraft;
-    double flightSpeed;
-    private int altitude, fuel;
-    private int currentDuration;
+    private double flightSpeed;
+    private int altitude, fuel, currentDuration, degrees, currentAltitude;
     private PrecisePosition aircraftPosition;
-    private int degrees, currentAltitude;
-    private boolean exitedDepartureAirport, enteredArrivalAirport, reachedDestination, active, fixedAltitude;
+    private boolean exitedDepartureAirport, enteredArrivalAirport;
+    private boolean crashed, landed, reachedDestination, active, fixedAltitude;
+
     public static final int LEFT = 270, RIGHT = 90, UP = 0, DOWN = 180;
     private Universe myUniverse;
 
@@ -39,6 +39,9 @@ public class Flight {
         this.fixedAltitude = false;
         this.myUniverse = Universe.getInstance();
         this.currentAltitude = 0;
+        this.crashed = false;
+        this.active = false;
+        this.landed = false;
     }
 
     private double orthoDistance(PrecisePosition a, PrecisePosition b) {
@@ -92,6 +95,7 @@ public class Flight {
         if (active) {
             myUniverse.increaseCrashes();
             myUniverse.addMessage("[Flight ID: " + id + "] CRASHED");
+            crashed = true;
             active = false;
         }
 	}
@@ -150,6 +154,7 @@ public class Flight {
         reduceFuel(dt);
         if (fuel <= 0 && active) {
             myUniverse.addMessage("[Flight ID: " + id + "] RUN OUT OFF FUEL");
+            crashed = true;
             myUniverse.increaseCrashes();
             active = false;
         } else if (!reachedDestination) {
@@ -161,6 +166,7 @@ public class Flight {
         } else {
             myUniverse.addMessage("[Flight ID: " + id + "] LANDED");
             myUniverse.increaseLandings();
+            landed = true;
             active = false;
         }
     }
@@ -292,10 +298,27 @@ public class Flight {
         else return 0;
     }
 
+    // String format for active flights
     public String stringifyActiveFlight() {
         String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + departureAirport.getName() +
             " | Speed: " + getCurrentSpeed() * 3600 + " knots | Altitude" + altitude + " feets | Remaining Fuel: " + fuel + " kg\n";
         return s;
     }
 
+    // String format for all flights
+    public String stringify() {
+        String status;
+        if (crashed) {
+            status = "crashed";
+        } else if (landed) {
+            status = "landed";
+        } else if (active) {
+            status = "active";
+        } else {
+            status = "inactive";
+        }
+        String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + departureAirport.getName() +
+            " | Status: " + status + " | Aircraft Type : " + aircraft.getName() + "\n";
+        return s;
+    }
 }

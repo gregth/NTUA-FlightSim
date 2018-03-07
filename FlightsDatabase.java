@@ -141,6 +141,15 @@ public class FlightsDatabase {
         }
     }
 
+    public String stringifyAllFlights() {
+        String airportString;
+        StringBuilder result = new StringBuilder();
+        flights.forEach((k, flight) -> {
+            result.append(flight.stringify());
+        });
+        return result.toString();
+    }
+
     public String stringifyActiveFlights() {
         StringBuilder result = new StringBuilder();
         for (Flight flight : activeFlights) {
