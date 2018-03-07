@@ -115,7 +115,7 @@ public class Airport {
     }
 
     public String stringify() {
-        String s = "ID:" + id + "  Name:" + name + "  Direction: " + direction + "  category: " + category + " open: " + open + "\n";
+        String s = "ID:" + id + " | Name:" + name + " | Direction: " + direction + " | category: " + category + " | open: " + open + "\n";
         return s;
     }
 }

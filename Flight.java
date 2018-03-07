@@ -300,8 +300,8 @@ public class Flight {
 
     // String format for active flights
     public String stringifyActiveFlight() {
-        String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + departureAirport.getName() +
-            " | Speed: " + getCurrentSpeed() * 3600 + " knots | Altitude" + altitude + " feets | Remaining Fuel: " + fuel + " kg\n";
+        String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + arrivalAirport.getName() +
+            " | Speed: " + getCurrentSpeed() * 3600 + " knots | Altitude: " + altitude + " feets | Remaining Fuel: " + fuel + " kg\n";
         return s;
     }
 
@@ -317,7 +317,7 @@ public class Flight {
         } else {
             status = "inactive";
         }
-        String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + departureAirport.getName() +
+        String s = "TakeOff Airport: " + departureAirport.getName() + " | Destination Airport: " + arrivalAirport.getName() +
             " | Status: " + status + " | Aircraft Type : " + aircraft.getName() + "\n";
         return s;
     }
