@@ -23,38 +23,27 @@ public class Universe {
         messages = new ArrayList<String>();
     };
 
-    public void constructDatabases() {
-        airportsDB = new AirportDatabase("data/airports_default.txt");
-        airSpecsDB = AircraftSpecsDatabase.getInstance();
-        myMap = new Map("data/world_default.txt");
-        flightDB = new FlightsDatabase("data/flights_default.txt");
-
-        display = new Display();
-
-    }
-
-    public AirportDatabase getAirportsDatabase() {
-        return airportsDB;
-    }
-
-    public Map getMap() {
-        return myMap;
-    }
-
-    public FlightsDatabase getFlightsDatabase() {
-        return flightDB;
+    // Updated universe after time dt in seconds
+    public void integrate(double dt) {
+        aircrafts = flightDB.countActiveFlights();
+        flightDB.integrate(dt);
+        increaseSimulatorClock(CONSTANTS.DELAY);
+        display.refresh();
     }
 
     public void loadNew(String id) {
         myMap = new Map("data/world_" + id + ".txt");
         airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
         flightDB = new FlightsDatabase("data/flights_" + id + ".txt");
+        display = new Display();
     }
 
+    // Tells database to init simulation
     public void init() {
         flightDB.init();
     }
 
+    // Sets timer
     public void setTimer(Timer timer) {
         this.timer = timer;
     }
@@ -103,13 +92,6 @@ public class Universe {
         simulatorClock += intervalInSeconds;
     }
 
-    public void integrate(double dt) {
-        aircrafts = flightDB.countActiveFlights();
-        flightDB.integrate(dt);
-        increaseSimulatorClock(CONSTANTS.DELAY);
-        display.refresh();
-    }
-
     public void addMessage(String m) {
         messages.add(m);
     }
@@ -117,4 +99,17 @@ public class Universe {
     public ArrayList<String> getMessages() {
         return messages;
     }
+
+    public AirportDatabase getAirportsDatabase() {
+        return airportsDB;
+    }
+
+    public Map getMap() {
+        return myMap;
+    }
+
+    public FlightsDatabase getFlightsDatabase() {
+        return flightDB;
+    }
+
 }

@@ -12,7 +12,7 @@ public class Simulator {
 			}
 		});
         myUniverse.setTimer(timer);
-        myUniverse.constructDatabases();
+        myUniverse.loadNew("default");
         myUniverse.init();
         myUniverse.startTimer();
     }
