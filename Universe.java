@@ -39,6 +39,7 @@ public class Universe {
         airportsDB = new AirportDatabase("data/airports_" + id + ".txt");
         flightDB = new FlightsDatabase("data/flights_" + id + ".txt");
         display = new Display();
+        display.refresh();
         this.init();
     }
 

@@ -75,7 +75,8 @@ public class MenuPane extends JPanel {
         JButton flightsButton = new JButton("Flights");
         flightsButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                JOptionPane.showMessageDialog(that, "Flights\nNew line");
+                String info = myUniverse.getFlightsDatabase().stringifyAllFlights();
+                JOptionPane.showMessageDialog(that, info);
             }
         });
         this.add(flightsButton);
