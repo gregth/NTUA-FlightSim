@@ -95,6 +95,7 @@ public class Flight {
         if (active) {
             myUniverse.increaseCrashes();
             myUniverse.addMessage("[Flight ID: " + id + "] CRASHED");
+            System.out.println("[Flight ID: " + id + "] CRASHED");
             crashed = true;
             active = false;
         }
@@ -153,7 +154,8 @@ public class Flight {
     public void integrate(double dt) {
         reduceFuel(dt);
         if (fuel <= 0 && active) {
-            myUniverse.addMessage("[Flight ID: " + id + "] RUN OUT OFF FUEL");
+            myUniverse.addMessage("[Flight ID: " + id + "] RUN OUT OF FUEL");
+            System.out.println("[Flight ID: " + id + "] RUN OUT OF FUEL");
             crashed = true;
             myUniverse.increaseCrashes();
             active = false;
@@ -162,18 +164,20 @@ public class Flight {
             int tolerance = (int) (getCurrentSpeed() * dt + 1);
             navigate(tolerance);
             updateAircraftPosition(dt);
-            System.out.println("[Flight ID: " + id + "] Estimated time: " + timeRemaining());
         } else {
             myUniverse.addMessage("[Flight ID: " + id + "] LANDED");
+            System.out.println("[Flight ID: " + id + "] LANDED");
             myUniverse.increaseLandings();
             landed = true;
             active = false;
         }
+        System.out.println("Flight ID: " + id + " | Speed: " + getCurrentSpeed() +
+                " | Consumtion Rate " + aircraft.getFuelConsumptionRate() + " | Fuel: " + fuel +
+                " | EST: "  + timeRemaining() +  " | Altitude: " + altitude);
     }
 
     private void reduceFuel(double dt) {
         fuel -= aircraft.getFuelConsumptionRate() * dt *  getCurrentSpeed();
-        System.out.println("FUEL: " + fuel);
     }
 
     public boolean isActive() {
@@ -199,6 +203,7 @@ public class Flight {
         // Makes exitedDepartureAirport true asap it takes off from airport tile
         if (!exitedDepartureAirport && !isInAirportRange(departureAirport)) {
             myUniverse.addMessage("[Flight ID: " + id + "] OUT OF Departure Airport Area");
+            System.out.println("[Flight ID: " + id + "] OUT OF Departure Airport Area");
             exitedDepartureAirport = true;
         }
 

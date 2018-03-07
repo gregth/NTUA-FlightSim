@@ -95,7 +95,6 @@ public class Airport {
     private PrecisePosition findGatePoint() {
         double x = (double) position.getX();
         double y = (double) position.getY();
-        System.out.println("GATEE" + x + "m" + y);
 
         switch (this.getDirection()) {
             case Airport.NORTH :
