@@ -64,6 +64,7 @@ public class Universe {
     }
 
     public void stopTimer() {
+        display.refresh();
         timer.stop();
     }
 
