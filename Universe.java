@@ -11,8 +11,8 @@ public class Universe {
     private Map myMap;
     private FlightsDatabase flightDB;
 
-    public Display display;
-    public Timer timer;
+    private Display display;
+    private Timer timer;
     private ArrayList<String> messages;
 
     private Universe() {
@@ -75,6 +75,10 @@ public class Universe {
 
 	public int getLandings() {
 		return landings;
+	}
+
+	public Display getDisplay() {
+		return display;
 	}
 
 	public void increaseAircrcafts() {
